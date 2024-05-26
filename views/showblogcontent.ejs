@@ -1,7 +1,11 @@
 <%- include("partials/header.ejs")%>
 
-<form action="/showblog" method="post">
-    <label for="title">Enter title of the Blog</label>
-<input type="text" name="title">
-<input type="submit" value="Show">
-</form>
+    <form action="/showblog" method="post" class="container">
+       <div class="col-auto"> 
+        <label for="title" class="form-label">Enter title of the Blog</label>
+        <input type="text" name="title" class="form-control">
+    </div>
+       <div class="col-auto">
+           <input type="submit" value="Show" class="btn btn-primary">
+       </div>
+    </form>

@@ -1,6 +1,12 @@
-<form action="/delete" method="post">
-    <label for="title"> Enter the Blog title</label>
-    <input type="text" name="title">    
-    <br>
-    <input type="submit" value="Show Blog">
+<%- include("partials/header.ejs")%>
+
+    <form action="/delete" method="post" class="container">
+        <div class="col-auto">
+            <label for="title">Enter the Blog title</label>
+            <input type="text" name="title" class="form-control">
+        </div>
+        <div class="col-auto">
+            <input type="submit" value="Show Blog" class="btn btn-primary">
+        </div>
+
     </form>

@@ -1,37 +1,54 @@
 <%- include("partials/header.ejs")%>
 
     <% if(locals.fileName && locals.data) {%>
-        <h1>
-            <%= fileName %>
-        </h1>
-        <p>
-            <%= data %>
-        </p>
+        <div class="container">
+
+            <h1 class="title">
+                <%= fileName %>
+            </h1>
+            <p>
+                <%= data %>
+            </p>
+        </div>
         <% if (locals.delete) {%>
-            <form action="/deleteblog" method="post">
-                <label for="title">Enter title name to confirm</label>
-                <input type="text" name="title">
-                <input type="submit" value="create">
+            <form action="/deleteblog" method="post" class="container">
+                <div class="col-auto">
+                    <label for="title">Enter title name to confirm</label>
+                <input type="text" name="title" class="form-control">
+                </div>
+                <div class="col-auto">
+                    <input type="submit" value="create" class="btn btn-primary">
+                </div>
             </form>
             <% } else if( locals.update) {%>
-                <form action="/blogcontentupdate" method="post">
-                    <label for="title"> Title</label>
-                    <input type="text" name="title">
+                <form action="/blogcontentupdate" method="post" >
+                   <div class="container">
+                     <div class="col-auto">
+                        <label for="title" class="form-label"> Title</label>
+                        <input type="text" name="title" class="form-control">
+                    </div>
+                    <div class="col-auto">
+                        <label for="content" class="form-label">Blog Text :</label>
+                        <textarea name="content" id="" cols="30" rows="10" class="form-control"></textarea>
+                    </div>
                     <br>
-                    <label for="content">Blog Text :</label>
                     <br>
-                    <textarea name="content" id="" cols="30" rows="10"></textarea>
-                    <br>
-                    <input type="submit" value="update">
+                    <div class="col-auto">
+                        <input type="submit" value="Update" class="btn btn-primary">
+                    </div>
+                   </div>
                 </form>
                 <% } %>
                     <% } else { %>
 
-                        <form action="/blogupdate" method="post">
-                            <label for="title"> Title</label>
-                            <input type="text" name="title">
-                            <br>
-                            <br>
-                            <input type="submit" value="Show Blog">
+                        <form action="/blogupdate" method="post" class="mb-3">
+                            <div class="container">
+                                <div class="col-auto">
+                                    <label for="title" class="form-label"> Title</label>
+                                    <input type="text" name="title" class="form-control">
+                                </div>
+                                <br>
+                                <input type="submit" value="Show Blog" class="btn btn-primary">
+                            </div>
                         </form>
                         <% } %>

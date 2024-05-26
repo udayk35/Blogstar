@@ -11,15 +11,21 @@ const port = 3000;
 var fileName = "";
 
 
+app.use(express.static("styles"));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
+    const src = __dirname + "/welcome.txt";
+    fileSystem.readFile(src, (err, data) => {
 
-    res.render("index.ejs");
+        res.render("index.ejs",{
+            data
+        });
+    })
+
 });
 
 app.get("/post", (req, res) => {
-
     res.render("createblog.ejs");
 });
 
@@ -57,18 +63,29 @@ app.get("/delete", (req, res) => {
 app.post("/delete", (req, res) => {
     const src = __dirname + "/blogs/" + req.body["title"];
     fileName = req.body["title"];
+try{
 
     fileSystem.readFile(src, (err, data) => {
-        if (err) throw err
-        res.render("showblog.ejs", { fileName, data, delete: true })
+        if (err) {
+            const errorMessage = "No Blog found with Title '" + fileName + "'";
+            res.render("status.ejs", { data: errorMessage });
+        } else {
+            res.render("showblog.ejs", { fileName, data, delete: true });
+        }
     });
+    }
+    catch(error)
+    {
+        console.error("Error reading file:", error);
+    }
 })
 app.post("/deleteblog", (req, res) => {
     const src = __dirname + "/blogs/" + req.body["title"];
     fileName = req.body["title"];
     fileSystem.rm(src, { force: true }, (err) => {
         if (err) throw err
-        res.render("Status.ejs", { delete: true, fileName });
+        const data = "Blog Deleted Title: "+fileName;
+        res.render("Status.ejs", { data });
     });
 })
 app.post("/submit", (req, res) => {
@@ -76,7 +93,8 @@ app.post("/submit", (req, res) => {
     fileName = req.body["title"];
     fileSystem.writeFile(src, req.body["content"], (err) => {
         if (err) throw err
-        res.render("status.ejs", { update: false, fileName });
+        const data = "Blog created with Title "+fileName;
+        res.render("status.ejs", { data });
     });
 
 });
@@ -91,19 +109,28 @@ app.get("/show", (req, res) => {
 })
 app.post("/showblog", (req, res) => {
     const src = __dirname + "/blogs/" + req.body["title"];
-    fileName = req.body["title"];
+const fileName = req.body["title"];
 
+try {
     fileSystem.readFile(src, (err, data) => {
-        if (err) throw err
-        res.render("showblog.ejs", { fileName, data })
-    })
-});
+        if (err) {
+            const errorMessage = "No Blog found with Title '" + fileName + "'";
+            res.render("status.ejs", { data: errorMessage });
+        } else {
+            res.render("showblog.ejs", { fileName, data });
+        }
+    });
+} catch (error) {
+    // Handle any synchronous errors (if any)
+    console.error("Error reading file:", error);
+    // You can send an error response here if needed
+}
+     });
 app.post("/blogupdate", (req, res) => {
     const src = __dirname + "/blogs/" + req.body["title"];
     fileName = req.body["title"];
 
     fileSystem.readFile(src, (err, data) => {
-        console.log("" + data);
         if (err) throw err
         res.render("showblog.ejs", { fileName, data, update: true });
     });
@@ -113,11 +140,10 @@ app.post("/blogcontentupdate", (req, res) => {
     const src = __dirname + "/blogs/" + req.body["title"];
     fileSystem.writeFile(src, req.body["content"], { flag: 'a+' }, (err) => {
         if (err) throw err
-        console.log(`Blog updated with title ${req.body["title"]}`);
+        const data = "Blog updated with Title "+req.body["title"];
         res.render("status.ejs",
             {
-                update: true,
-                fileName,
+                data
             });
     });
 });
