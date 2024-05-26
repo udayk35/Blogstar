@@ -1,0 +1,12 @@
+<%- include("partials/header.ejs")%>
+    <% if (locals.update){ %>
+
+        <h1>Blog updated with title <%=fileName %>
+        </h1>
+        <% } else if (locals.delete) { %>
+            <h1>Blog Deleted Title <%=fileName %>
+            </h1>
+            <% }else{%>
+                <h1>Blog created successfully with title <%=fileName %>
+                </h1>
+                <%} %>
