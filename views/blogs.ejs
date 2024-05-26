@@ -1,0 +1,13 @@
+<%- include("partials/header.ejs")%>
+<ul>
+
+    <% fileNames.forEach(file => { %>
+        
+        <li>
+            <%= file %>
+            <p>
+                <%= fileObj[file] %>
+            </p>
+        </li>
+    <% }); %>
+</ul>
